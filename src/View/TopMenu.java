@@ -1,5 +1,7 @@
 package View;
 
+import Tools.ResizingTracker;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,13 +25,14 @@ public class TopMenu extends JMenuBar {
      */
     public TopMenu(){
         super();
-        this.setName("Top Menu");
+        this.setName("----------------- Top Menu");
         loadImages();
         setMenus();
         //super.setMargin(new Insets(100,100, 100,100));
         super.setBorder(new EmptyBorder(3, 10, 1, 10));
-        super.setMinimumSize(new Dimension(200,100));
+        super.setMinimumSize(new Dimension(400,21));
 
+        new ResizingTracker(this, true, true);
 
     }
 

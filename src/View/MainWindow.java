@@ -14,7 +14,7 @@ public class MainWindow extends JFrame {
     /**The size of the screen used by the computer running the app*/
     private static Rectangle dimScreen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 
-    //The cmponents of the main window
+    //The components of the main window
     public TopMenu topMenu;
     public Board board;
     public StatusBar statusBar;
@@ -25,12 +25,13 @@ public class MainWindow extends JFrame {
      */
     public MainWindow(){
         super("Phototheque");
-        //super.setPreferredSize(dimScreen.getSize());
+        super.setMinimumSize(new Dimension(620, 225));
+        super.setPreferredSize(dimScreen.getSize());
         super.setMaximumSize(dimScreen.getSize());
         System.out.println("Windows pref size : "+super.getPreferredSize());
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ResizingTracker c;
-        new ResizingTracker(this);
+        new ResizingTracker(this, true, true);
 
         //The main layout
         BorderLayout layout = new BorderLayout();

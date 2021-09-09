@@ -20,6 +20,7 @@ public class ToolsBar extends JScrollPane {
      */
     public ToolsBar(){
         super(new JPanel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        this.setMinimumSize(new Dimension(140,141));
         this.content = (JPanel) this.getViewport().getView();
         this.content.setLayout(new GridBagLayout());
         setTools();

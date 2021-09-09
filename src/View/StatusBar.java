@@ -16,6 +16,8 @@ public class StatusBar extends JPanel {
     public StatusBar(){
         this.setBorder(new EmptyBorder(0, 10, 0, 10));
         this.setName("Status Bar");
+        //this.setMinimumSize(new Dimension(606,26));
+        this.setMinimumSize(new Dimension(1,1));
         FlowLayout fl = new FlowLayout();
         fl.setAlignment(FlowLayout.LEADING);
         fl.setHgap(50);
