@@ -36,7 +36,6 @@ public class TopMenuController {
         topMenu.importFile.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent a) {
                 JFileChooser fileChooser = new JFileChooser();
-                //fileChooser.setCurrentDirectory(new File("C:\\Users\\hamee\\Downloads"));
                 fileChooser.setDialogTitle("Select a new picture");
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 fileChooser.setFileFilter(new FileNameExtensionFilter("Images files","png", "jpg"));
