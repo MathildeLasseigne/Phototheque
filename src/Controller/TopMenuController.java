@@ -38,7 +38,7 @@ public class TopMenuController {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setDialogTitle("Select a new picture");
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fileChooser.setFileFilter(new FileNameExtensionFilter("Images files","png", "jpg"));
+                fileChooser.setFileFilter(new FileNameExtensionFilter("Images files","png", "jpg", "jpeg"));
                 if(fileChooser.showOpenDialog(topMenu.importFile)==JFileChooser.APPROVE_OPTION){
                     fileChooserResult = fileChooser.getSelectedFile().getPath();
                     ctrl.mainWindow.statusBar.setCurrentImgName(fileChooser.getSelectedFile().getName());
