@@ -25,7 +25,7 @@ public class TopMenu extends JMenuBar {
      */
     public TopMenu(){
         super();
-        this.setName("----------------- Top Menu");
+        this.setName("Top Menu");
         loadImages();
         setMenus();
         //super.setMargin(new Insets(100,100, 100,100));

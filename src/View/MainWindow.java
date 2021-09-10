@@ -28,7 +28,7 @@ public class MainWindow extends JFrame {
         super.setMinimumSize(new Dimension(620, 225));
         super.setPreferredSize(dimScreen.getSize());
         super.setMaximumSize(dimScreen.getSize());
-        System.out.println("Windows pref size : "+super.getPreferredSize());
+
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ResizingTracker c;
         new ResizingTracker(this, true, true);

@@ -23,7 +23,6 @@ public class Board extends JScrollPane {
         Dimension boardPrefSize = new Dimension((int) (window.getPreferredSize().getWidth()/2), (int) (window.getPreferredSize().getHeight()/2));
         this.contentBoard.setPreferredSize(boardPrefSize);
         this.contentBoard.setMaximumSize(boardPrefSize);
-        System.out.println("Board pref size : "+new Dimension((int) (window.getPreferredSize().getWidth()/2), (int) (window.getPreferredSize().getHeight()/2)));
         this.contentBoard.setBackground(Color.LIGHT_GRAY);
     }
 }
