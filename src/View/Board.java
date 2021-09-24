@@ -1,8 +1,13 @@
 package View;
 
+import Tools.Utilities;
+import Widget.Frame;
+import Widget.PhotoComponent;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Board extends JScrollPane {
 
@@ -17,6 +22,8 @@ public class Board extends JScrollPane {
         this.window = window;
         this.setMinimumSize(new Dimension(500, 500));
 
+        this.getViewport().setBackground(Color.LIGHT_GRAY);
+
         this.contentBoard = (JPanel) this.getViewport().getView();
 
         this.contentBoard.setMinimumSize(new Dimension(500, 500));
@@ -24,5 +31,17 @@ public class Board extends JScrollPane {
         this.contentBoard.setPreferredSize(boardPrefSize);
         this.contentBoard.setMaximumSize(boardPrefSize);
         this.contentBoard.setBackground(Color.LIGHT_GRAY);
+
+        addPhotoComponent();
+    }
+
+
+
+    public void addPhotoComponent(){
+        BufferedImage img = Utilities.getBIfromPath("src/Sprites/Icone_d_image_color.png");
+
+        PhotoComponent pc = new PhotoComponent(img);
+        pc.setFrame(new Frame(new Insets(20,20,20,20)));
+        this.setViewportView(pc);
     }
 }
