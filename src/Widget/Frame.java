@@ -74,7 +74,7 @@ public class Frame {
         Shape oldClip = g2.getClip();
         Color oldColor = g2.getColor();
 
-        g2.setClip(this.bounds);
+        //g2.setClip(this.bounds); //setting clip will create bugs in JScroll bar
         paintComponent(g2);
 
         g2.setColor(oldColor);
