@@ -81,7 +81,7 @@ public class PhotoComponentModel {
 
             public void doubleClick(MouseEvent e)
             {
-                System.out.println("Flip");
+                //System.out.println("Flip");
                 flip();
                 photoComponent.repaint();
 
