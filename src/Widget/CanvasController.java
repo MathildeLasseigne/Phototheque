@@ -1,6 +1,7 @@
 package Widget;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 class CanvasController {
@@ -56,6 +57,7 @@ class CanvasController {
         this.currentDrawable.closeDrawable();
         this.currentDrawable = null;
         this.drawingModeOn = false;
+        System.out.println("Close drawable");
     }
 
 
@@ -63,32 +65,76 @@ class CanvasController {
         this.registerMousePressedPosition(e);
     }
 
-    int newDrawing = 0;
 
     public void onMouseDragged(MouseEvent e){
         //System.out.println("canvas mouse dragged");
+        if(isDrawing()){
+            if(this.currentDrawable instanceof Text){
+                //System.out.println("Close text from drag");
+                this.endDrawingMode();
+                this.registerMousePressedPosition(e);
+            }
+        }
         if(! isDrawing()){
             this.openDrawingMode(new PenLine(this.mousePressedPosition));
-            //System.out.println("new drawing :" + ++newDrawing);
-            /*if(newDrawing == 5){
-                System.out.println("test");
-            }
-
-             */
         }
         this.drawPenLine(e);
     }
 
     public void onMouseReleased(MouseEvent e){
         if(isDrawing()){
+            //System.out.println("close on mouse released");
             this.endDrawingMode();
             this.releaseMousePressedPosition();
         }
-        //TODO text part
     }
 
+    /**
+     * Handle the text creating
+     * @param e
+     */
     public void onMouseClicked(MouseEvent e){
-        //TODO text part
+        if(! isDrawing()){
+            this.registerMousePressedPosition(e);
+            if(this.mousePressedPosition == null){
+                //System.out.println("mouse pos null");
+            }
+            if(this.canvas.getBounds().contains(this.mousePressedPosition)){
+                Text newText = new Text(this.mousePressedPosition, this.canvas.getBounds());
+                this.openDrawingMode(newText);
+                //System.out.println("New text");
+            }
+
+        } else {
+            //End old text and create a new one
+            //System.out.println("Close text from click");
+            this.endDrawingMode();
+            this.onMouseClicked(e);
+        }
     }
+
+    /**
+     * Handle the writing of the text.
+     * Entering enter key will close the text.
+     * Entering backspace will delete the last charater typed
+     * @param e
+     */
+    public void onKeyClicked(KeyEvent e){
+        if(this.isDrawing()){
+            if(this.currentDrawable instanceof Text && ! ((Text) this.currentDrawable).isClosed()){
+                if((int)e.getKeyChar() == 10){ //KeyEvent.VK_ENTER
+                    System.out.println("Press enter");
+                    this.endDrawingMode();
+                } else if((int)e.getKeyChar() == 8){ //KeyEvent.VK_BACK_SPACE
+                    System.out.println("Press back space");
+                    ((Text) this.currentDrawable).deleteLastChar();
+                } else {
+                    this.currentDrawable.addNewChar(e.getKeyChar());
+                }
+            }
+
+        }
+    }
+
 
 }

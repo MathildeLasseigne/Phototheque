@@ -21,6 +21,7 @@ public class PhotoComponent extends JComponent {
      * @see Frame
      */
     public PhotoComponent(BufferedImage photo){
+        this.setFocusable(true);
         this.photo = photo;
         this.photoComponentUI = new PhotoComponentUI(this);
         this.photoComponentModel = new PhotoComponentModel(this, photo); //Must be called after UI to have the canvas & photo ready
@@ -31,7 +32,6 @@ public class PhotoComponent extends JComponent {
         this.setPreferredSize(this.photoComponentUI.frame.getBounds().getSize());
 
         this.photoComponentUI.installUI();
-        this.setFocusable(true);
     }
 
 

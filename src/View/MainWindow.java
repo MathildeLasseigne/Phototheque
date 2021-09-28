@@ -52,14 +52,14 @@ public class MainWindow extends JFrame {
         topMenu = new TopMenu();
         super.add(topMenu, BorderLayout.NORTH);
 
-        board = new Board(this);
-        super.add(board, BorderLayout.CENTER);
-
         statusBar = new StatusBar();
         super.add(statusBar, BorderLayout.SOUTH);
 
         toolsBar = new ToolsBar();
         super.add(toolsBar, BorderLayout.WEST);
+
+        board = new Board(this);
+        super.add(board, BorderLayout.CENTER);
     }
 
 }

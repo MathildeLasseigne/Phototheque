@@ -3,8 +3,7 @@ package Widget;
 import Tools.ClickListener;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 public class PhotoComponentModel {
@@ -123,6 +122,19 @@ public class PhotoComponentModel {
      */
     public MouseAdapter getMouseListenerUI() {
         return mouseListenerUI;
+    }
+
+    public KeyAdapter getKeyListenerUI(){
+        return new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                canvasController.onKeyClicked(e);
+                photoComponent.repaint();
+
+            }
+
+        };
     }
 
 }

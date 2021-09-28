@@ -69,15 +69,6 @@ public class PhotoComponentUI {
             this.photo.paint(g);
         }
 
-        /*
-        g.setColor(Color.RED);
-        g.fillRect(0,0, 150,150);
-
-
-        g.setColor(Color.BLUE);
-        g.fillRect(160, 160, 50, 50);
-
-         */
     }
 
     /**
@@ -86,6 +77,7 @@ public class PhotoComponentUI {
     public void installUI(){
         this.photoComponent.addMouseListener(this.photoComponent.photoComponentModel.getMouseListenerUI());
         this.photoComponent.addMouseMotionListener(this.photoComponent.photoComponentModel.getMouseListenerUI());
+        this.photoComponent.addKeyListener(this.photoComponent.photoComponentModel.getKeyListenerUI());
     }
 
 
