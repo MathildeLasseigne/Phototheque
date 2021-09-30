@@ -11,6 +11,8 @@ public class Frame {
 
     private Rectangle bounds;
 
+    private Rectangle insideBounds;
+
 
     public Frame(Insets insets){
 
@@ -28,13 +30,40 @@ public class Frame {
     }
 
     /**
-     * Return the position the photo must be in to respect the insets
+     * The the bounds of the photo in which it is possible to be displayed
+     * @param photo
+     */
+    protected void setPhotoBounds(Photos photo){
+        photo.setBounds(this.insideBounds);
+    }
+
+    /**
+     * Return the position the photo must be in to respect the insets and its bounds
      * @return
      */
     private Point positionPhoto(){
-        return new Point(this.insets.left, this.insets.top);
+        return new Point(this.bounds.x+this.insets.left, this.bounds.y+this.insets.top);
     }
 
+
+    /**
+     * Create the inside and outside bounds depending on the photo component bounds
+     * @param photoComponent
+     */
+    void updateBounds(PhotoComponent photoComponent){
+        Dimension pcDim = photoComponent.getSize();
+        this.bounds = new Rectangle(photoComponent.getLocation(), pcDim);
+        this.insideBounds = new Rectangle(positionPhoto(), new Dimension(pcDim.width - this.insets.left - this.insets.right, pcDim.height - this.insets.top - this.insets.bottom));
+    }
+
+    /**
+     * Create the inside and outside bounds depending on the photo component bounds
+     * @param photoComponent
+     */
+    void setBounds(PhotoComponent photoComponent){
+        this.bounds = new Rectangle(photoComponent.getLocation(), photoComponent.dimension);
+        this.insideBounds = new Rectangle(positionPhoto(), new Dimension(photoComponent.dimension.width - this.insets.left - this.insets.right, photoComponent.dimension.height - this.insets.top - this.insets.bottom));
+    }
 
     /**
      * Return the bounds if the frame was setted into the PhotoComponent
@@ -42,6 +71,14 @@ public class Frame {
      */
     public Rectangle getBounds() {
         return bounds;
+    }
+
+    /**
+     * Return the bounds in which the photo must be displayed
+     * @return
+     */
+    public Rectangle getInsideBounds() {
+        return insideBounds;
     }
 
     /**
@@ -62,6 +99,9 @@ public class Frame {
     public void paintComponent(Graphics2D g2){
         g2.setColor(new Color(200, 173, 127));
         g2.fill(this.bounds);
+
+        g2.setColor(new Color(223, 242, 255));
+        g2.fill(this.insideBounds);
     }
 
     /**

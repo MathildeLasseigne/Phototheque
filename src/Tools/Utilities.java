@@ -41,4 +41,46 @@ public class Utilities {
         return bi;
     }
 
+
+    /**
+     * Resize the bi while keeping the proportions. The scale will be made depending on the biggest side of the bi.
+     * <br/> This method will fit the original image into the given rectangle (created from the height and width given)
+     * @param bi - source image to scale
+     * @param width - desired width
+     * @param height - desired height
+     * @return - the new resized image
+     */
+    public static BufferedImage resizeBIWithProportion(BufferedImage bi, int width, int height){
+        //Calculate width & height for proportion
+        int w = 0,h = 0; //The new sizes
+        //Biggest side must fit into its new size. The other side is changed in proportion
+        if(bi.getWidth() > bi.getHeight()){
+            w = width;
+            double scale = w/(double) bi.getWidth();//bi.getWidth() * scale = w;
+            h = (int) Math.round(bi.getHeight() * scale);
+            if(h>height){ //If it protrude out of the given bounds. Limit extension to height
+                h = height;
+                double scaleBis = h/(double) bi.getHeight();//bi.getHeight() * scale = h;
+                w = (int) Math.round(bi.getWidth() * scaleBis);
+            }
+        } else {
+            h = height;
+            double scale = h/(double) bi.getHeight();//bi.getHeight() * scale = h;
+            w = (int) Math.round(bi.getWidth() * scale);
+            if(w>width){//If it protrude out of the given bounds. Limit extension to width
+                w = width;
+                double scaleBis = w/(double) bi.getWidth();//bi.getWidth() * scale = w;
+                h = (int) Math.round(bi.getHeight() * scaleBis);
+            }
+        }
+
+        //Do resizing
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TRANSLUCENT);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(bi, 0, 0, w, h, null);
+        g2.dispose();
+        return resizedImg;
+    }
+
 }

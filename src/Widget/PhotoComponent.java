@@ -2,6 +2,8 @@ package Widget;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 
 public class PhotoComponent extends JComponent {
@@ -11,6 +13,8 @@ public class PhotoComponent extends JComponent {
     PhotoComponentModel photoComponentModel;
 
     PhotoComponentUI photoComponentUI;
+
+    Dimension dimension;
 
     private BufferedImage photo;
 
@@ -22,14 +26,55 @@ public class PhotoComponent extends JComponent {
      */
     public PhotoComponent(BufferedImage photo){
         this.setFocusable(true);
+
+        this.setVisible(true);
+        //this.setPreferredSize(this.photoComponentUI.frame.getBounds().getSize());
+        this.setPreferredSize(new Dimension(300,300));
+        this.dimension = this.getPreferredSize();
+
         this.photo = photo;
         this.photoComponentUI = new PhotoComponentUI(this);
         this.photoComponentModel = new PhotoComponentModel(this, photo); //Must be called after UI to have the canvas & photo ready
 
-        this.add(new JLabel("Test2"));
+
+        this.photoComponentUI.installUI();
+    }
+
+    public PhotoComponent(BufferedImage photo, Dimension dimension){
+        this.setFocusable(true);
 
         this.setVisible(true);
-        this.setPreferredSize(this.photoComponentUI.frame.getBounds().getSize());
+        this.setPreferredSize(dimension);
+        this.dimension = dimension;
+
+        this.photo = photo;
+        this.photoComponentUI = new PhotoComponentUI(this);
+        this.photoComponentModel = new PhotoComponentModel(this, photo); //Must be called after UI to have the canvas & photo ready
+
+
+        this.photoComponentUI.installUI();
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                updateBounds();
+            }
+        });
+    }
+
+    public PhotoComponent(BufferedImage photo, Point position, Dimension dimension){
+        this.setFocusable(true);
+
+        this.setPreferredSize(dimension);
+        this.dimension = dimension;
+        this.setLocation(position);
+
+
+        this.photo = photo;
+        this.photoComponentUI = new PhotoComponentUI(this);
+        this.photoComponentModel = new PhotoComponentModel(this, photo); //Must be called after UI to have the canvas & photo ready
+
+
+        this.setVisible(true);
 
         this.photoComponentUI.installUI();
     }
@@ -48,7 +93,14 @@ public class PhotoComponent extends JComponent {
      */
     public void setFrame(Frame frame){
         this.photoComponentUI.setFrame(frame);
-        this.setPreferredSize(this.photoComponentUI.frame.getBounds().getSize());
+        //this.setPreferredSize(this.photoComponentUI.frame.getBounds().getSize());
+    }
+
+    /**
+     * Update the bounds in case of a resize
+     */
+    public void updateBounds(){
+        this.photoComponentUI.updateBounds();
     }
 
     /**

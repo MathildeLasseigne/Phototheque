@@ -41,14 +41,33 @@ public class PhotoComponentUI {
 
 
     /**
-     * Set the frame
+     * Set the frame. Set the bounds of the photo and the canvas
      * @param frame
      */
     public void setFrame(Frame frame) {
         this.frame = frame;
-        this.frame.setPhoto(this.photo); //Change the bounds of the photos to fit in the frame
-        this.canvas.updateBounds(this.photo.getBounds());
+        //this.frame.setPhoto(this.photo); //Change the bounds of the photos to fit in the frame
+        //this.canvas.updateBounds(this.photo.getBounds());
+        setBounds();
 
+    }
+
+    /**
+     * Setting of all bounds used
+     */
+    void setBounds(){
+        this.frame.setBounds(this.photoComponent);
+        this.frame.setPhotoBounds(this.photo);
+        this.canvas.updateBounds(this.photo.getBounds());
+    }
+
+    /**
+     * Update of all bounds used
+     */
+    void updateBounds(){
+        this.frame.updateBounds(this.photoComponent);
+        this.frame.setPhotoBounds(this.photo);
+        this.canvas.updateBounds(this.photo.getBounds());
     }
 
     /**

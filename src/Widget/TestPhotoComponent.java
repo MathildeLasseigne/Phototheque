@@ -40,13 +40,13 @@ public class TestPhotoComponent {
 
         BufferedImage img = Utilities.getBIfromPath("src/Sprites/Icone_d_image_color.png");
 
-        PhotoComponent pc = new PhotoComponent(img);
+        PhotoComponent pc = new PhotoComponent(img, new Dimension(500,300));
         pc.setFrame(new Frame(new Insets(20,20,20,20)));
 
         JScrollPane sp = new JScrollPane(pc);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        sp.getViewport().setBackground(new Color(200, 173, 127));
+        sp.getViewport().setBackground(Color.CYAN);
 
         frame.add(sp, BorderLayout.CENTER);
 
