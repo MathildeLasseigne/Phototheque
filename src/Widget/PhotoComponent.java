@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.image.BufferedImage;
 
 public class PhotoComponent extends JComponent {
@@ -19,6 +20,9 @@ public class PhotoComponent extends JComponent {
     private BufferedImage photo;
 
     private Dimension oldSize;
+
+    /**The component events must be redispatched to*/
+    JComponent listener = null;
 
     /**
      * Create the photoComponent
@@ -138,6 +142,25 @@ public class PhotoComponent extends JComponent {
      */
     public BufferedImage getPhoto(){
         return this.photo;
+    }
+
+    /**
+     * Return the key adapter used by the photoComponent.
+     * <br/>Useful because JComponants are not focusable and as such dont receive KeyEvents
+     * @return
+     */
+    public KeyAdapter getKeyListenerInUse(){
+        return photoComponentModel.getKeyListenerUI();
+    }
+
+    /**
+     * Register a listener to which all listeners in the PhotoComponent will redispatch their event to.
+     * <br/> All mouseEvent, mouseMotionEvent and mouseKeyEvent are consumed by photoComponent,
+     * registering a listener will prevent events from being lost
+     * @param listener The component which will receive the events. Must have a listener.
+     */
+    public void redispatchEventsTo(JComponent listener){
+        this.listener = listener;
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.awt.event.ComponentListener;
 public class ResizingTracker {
 
     /**Activate or disactivate the Resizing tracker*/
-    private static boolean activate = true;
+    private static boolean activate = false;
 
     private Dimension oldDimension = new Dimension();
 

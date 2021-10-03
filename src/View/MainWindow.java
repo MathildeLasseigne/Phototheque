@@ -5,8 +5,6 @@ import Tools.ResizingTracker;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.io.IOException;
 
 public class MainWindow extends JFrame {
@@ -28,6 +26,7 @@ public class MainWindow extends JFrame {
         super.setMinimumSize(new Dimension(620, 225));
         super.setPreferredSize(dimScreen.getSize());
         super.setMaximumSize(dimScreen.getSize());
+        super.setFocusable(true);
 
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ResizingTracker c;
@@ -60,6 +59,8 @@ public class MainWindow extends JFrame {
 
         board = new Board(this);
         super.add(board, BorderLayout.CENTER);
+        board.setMouseListener();
+        board.setKeyListener(this);
     }
 
 }

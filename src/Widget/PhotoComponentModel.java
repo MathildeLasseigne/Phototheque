@@ -21,6 +21,8 @@ public class PhotoComponentModel {
 
     private MouseAdapter mouseListenerUI;
 
+    private KeyAdapter keyListenerUI;
+
 
     public PhotoComponentModel(PhotoComponent photoComponent, BufferedImage photo){
         this.photoComponent = photoComponent;
@@ -28,6 +30,7 @@ public class PhotoComponentModel {
         this.canvasController = new CanvasController(this.photoComponent.photoComponentUI.canvas);
 
         createMouseAdapter();
+        createKeyAdapter();
 
     }
 
@@ -76,6 +79,9 @@ public class PhotoComponentModel {
                     canvasController.onMouseClicked(e);
                     photoComponent.repaint();
                 }
+                if(photoComponent.listener != null){
+                    photoComponent.listener.dispatchEvent(e);
+                }
             }
 
             public void doubleClick(MouseEvent e)
@@ -83,6 +89,9 @@ public class PhotoComponentModel {
                 //System.out.println("Flip");
                 flip();
                 photoComponent.repaint();
+                if(photoComponent.listener != null){
+                    photoComponent.listener.dispatchEvent(e);
+                }
 
             }
 
@@ -91,6 +100,9 @@ public class PhotoComponentModel {
                 //System.out.println("mouse pressed");
                 if(isFlipped()){
                     canvasController.onMousePressed(e);
+                }
+                if(photoComponent.listener != null){
+                    photoComponent.listener.dispatchEvent(e);
                 }
             }
 
@@ -101,6 +113,9 @@ public class PhotoComponentModel {
                     canvasController.onMouseReleased(e);
                     photoComponent.repaint();
                 }
+                if(photoComponent.listener != null){
+                    photoComponent.listener.dispatchEvent(e);
+                }
             }
 
             public void mouseDragged(MouseEvent e) {
@@ -109,11 +124,29 @@ public class PhotoComponentModel {
                     canvasController.onMouseDragged(e);
                     photoComponent.repaint();
                 }
+                if(photoComponent.listener != null){
+                    photoComponent.listener.dispatchEvent(e);
+                }
             }
 
         };
 
 
+    }
+    private void createKeyAdapter(){
+        this.keyListenerUI = new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                canvasController.onKeyClicked(e);
+                photoComponent.repaint();
+                if(photoComponent.listener != null){
+                    photoComponent.listener.dispatchEvent(e);
+                }
+
+            }
+
+        };
     }
 
     /**
@@ -125,16 +158,7 @@ public class PhotoComponentModel {
     }
 
     public KeyAdapter getKeyListenerUI(){
-        return new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-                canvasController.onKeyClicked(e);
-                photoComponent.repaint();
-
-            }
-
-        };
+        return this.keyListenerUI;
     }
 
 }
