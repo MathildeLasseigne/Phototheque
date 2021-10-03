@@ -73,7 +73,12 @@ public class Text extends Drawable{
 
     @Override
     public void draw(Graphics g) {
-
+        Color oldColor = g.getColor();
+        g.setColor(Color.BLACK);
+        if(open){
+            g.drawRect(this.originPoint.x-1, this.originPoint.y-g.getFontMetrics().getAscent(), 1, g.getFontMetrics().getHeight());
+        }
+        g.setColor(oldColor);
         if(! this.text.isEmpty()){
             ArrayList<String> lines = this.parseLine(parseInputToWordsArray(text), g);
             int newY = this.originPoint.y;
@@ -81,6 +86,10 @@ public class Text extends Drawable{
                 g.drawString(line, this.originPoint.x, newY);
 
                 newY += g.getFontMetrics().getHeight();
+            }
+            if(open){
+                g.drawRect(this.originPoint.x-1, this.originPoint.y-g.getFontMetrics().getAscent(),
+                        g.getFontMetrics().stringWidth(lines.get(0))+1, g.getFontMetrics().getHeight()*lines.size());
             }
         }
 
