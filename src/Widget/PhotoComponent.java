@@ -18,6 +18,8 @@ public class PhotoComponent extends JComponent {
 
     private BufferedImage photo;
 
+    private Dimension oldSize;
+
     /**
      * Create the photoComponent
      * <br/>Its prefered size will be dependent on the Frame size
@@ -31,6 +33,7 @@ public class PhotoComponent extends JComponent {
         //this.setPreferredSize(this.photoComponentUI.frame.getBounds().getSize());
         this.setPreferredSize(new Dimension(300,300));
         this.dimension = this.getPreferredSize();
+        this.oldSize = this.dimension;
 
         this.photo = photo;
         this.photoComponentUI = new PhotoComponentUI(this);
@@ -40,12 +43,20 @@ public class PhotoComponent extends JComponent {
         this.photoComponentUI.installUI();
     }
 
+    /**
+     * Create the photoComponent
+     * <br/>Its prefered size will be dependent on the Frame size
+     * @param photo the photo to render in the photo Component
+     * @param dimension
+     * @see Frame
+     */
     public PhotoComponent(BufferedImage photo, Dimension dimension){
         this.setFocusable(true);
 
         this.setVisible(true);
         this.setPreferredSize(dimension);
         this.dimension = dimension;
+        this.oldSize = this.dimension;
 
         this.photo = photo;
         this.photoComponentUI = new PhotoComponentUI(this);
@@ -61,11 +72,20 @@ public class PhotoComponent extends JComponent {
         });
     }
 
+    /**
+     *  Create the photoComponent
+     * <br/>Its prefered size will be dependent on the Frame size
+     * @param photo the photo to render in the photo Component
+     * @param position
+     * @param dimension
+     * @see Frame
+     */
     public PhotoComponent(BufferedImage photo, Point position, Dimension dimension){
         this.setFocusable(true);
 
         this.setPreferredSize(dimension);
         this.dimension = dimension;
+        this.oldSize = this.dimension;
         this.setLocation(position);
 
 
@@ -97,7 +117,7 @@ public class PhotoComponent extends JComponent {
     }
 
     /**
-     * Update the bounds in case of a resize
+     * Update the bounds in case of a resize or movement
      */
     public void updateBounds(){
         this.photoComponentUI.updateBounds();
@@ -125,11 +145,5 @@ public class PhotoComponent extends JComponent {
     {
         super.paintComponent(g);
         this.photoComponentUI.paint(g);
-        //this.paintChildren(g);
-        //Graphics2D g2d = (Graphics2D) g.create();
-        //g2d.setColor(Color.red);
-        //this.photoComponentUI.frame.repaint();
-        //g2d.drawString("Hello", 50, 50);
-        //g2d.dispose();
     }
 }

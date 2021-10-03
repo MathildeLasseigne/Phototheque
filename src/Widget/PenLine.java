@@ -58,7 +58,7 @@ public class PenLine extends Drawable {
      * @param addedShape
      */
     private void updateShape(Shape addedShape){
-        this.lineShape.add(new Area(addedShape));
+        this.lineShape.add(new Area(addedShape.getBounds2D()));
     }
 
     /**
@@ -114,6 +114,10 @@ public class PenLine extends Drawable {
             for(Line2D l : this.lines){
                 g2.draw(l);
             }
+
+
+            /*g2.setStroke(new BasicStroke(4)); //Do not work, bounds cant have rotation -> really ugly
+            g2.fill(this.lineShape);*/
             /*Point last = points.get(0);
             for(int i = 1; i< points.size(); i++){
                 Point current = points.get(i);

@@ -18,6 +18,9 @@ class CanvasController {
         this.canvas = canvas;
     }
 
+    void scaleGraphics(double scaleX, double scaleY){
+
+    }
 
 
     public void registerMousePressedPosition(MouseEvent e){

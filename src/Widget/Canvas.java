@@ -65,6 +65,13 @@ class Canvas {
         g2.setColor(oldColor);
 
          */
+        /*g.setColor(Color.YELLOW);
+        g.fillRect(0, 0, 100, 100);
+        g.setColor(Color.RED);
+        g.fillRect(0, 100, 50, 50);
+
+         */
+
     }
 
     /**
