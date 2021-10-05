@@ -46,7 +46,7 @@ public class Board extends JScrollPane {
         //setMouseListener();
         //setKeyListener();
 
-        addPhotoComponent();
+        //addPhotoComponent();
     }
 
 
@@ -87,6 +87,8 @@ public class Board extends JScrollPane {
     public void removeAllPhotoComponent(){
         this.photoList.clear();
         this.contentBoard.removeAll();
+        selectedPhoto = null;
+        this.repaint();
     }
 
     /**

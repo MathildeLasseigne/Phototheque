@@ -47,6 +47,7 @@ public class TopMenuController {
             public void actionPerformed(ActionEvent a) {
                 ctrl.mainWindow.statusBar.setActionMessage("You asked to delete an image");
                 ctrl.mainWindow.statusBar.setCurrentImgName(null);
+                ctrl.mainWindow.board.removeAllPhotoComponent();
             }
         });
 
