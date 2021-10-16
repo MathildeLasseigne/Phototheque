@@ -163,6 +163,14 @@ public class PhotoComponent extends JComponent {
         this.listener = listener;
     }
 
+    /**
+     * Allow or not the selection of annotations
+     * @param allow
+     */
+    public void allowSelection(boolean allow){
+        this.photoComponentModel.getCanvasController().setSelectionAllowed(allow);
+    }
+
     @Override
     public void paintComponent(Graphics g)
     {

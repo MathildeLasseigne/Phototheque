@@ -120,12 +120,14 @@ public class Board extends JScrollPane {
                     if(getBoundsOnScreen(photoData.getPhotoComponent()).contains(e.getLocationOnScreen())){
                         if(selectedPhoto != photoData){
                             selectedPhoto = photoData;
+                            selectedPhoto.getPhotoComponent().allowSelection(true);
                         }
                         found = true;
                         break;
                     }
                 }
                 if(! found){
+                    selectedPhoto.getPhotoComponent().allowSelection(false);
                     selectedPhoto = null;
                 }
 

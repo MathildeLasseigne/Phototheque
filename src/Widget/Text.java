@@ -1,6 +1,7 @@
 package Widget;
 
 import java.awt.*;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 
 public class Text extends Drawable{
@@ -13,6 +14,8 @@ public class Text extends Drawable{
 
     private Rectangle windowBounds;
 
+    private ArrayList<String> savedLines;
+
     public Text(Point originPoint, Rectangle windowBounds){
         this.originPoint = originPoint;
         this.windowBounds = windowBounds;
@@ -22,6 +25,7 @@ public class Text extends Drawable{
     public void addNewChar(char newChar){
         if(! isClosed()){
             this.text += newChar;
+            savedLines = null; //Remove old saved lines to calculate new ones
         }
     }
 
@@ -29,6 +33,7 @@ public class Text extends Drawable{
         if(! isClosed()){
             if(text.length() != 0){
                 this.text = text.substring(0, text.length() - 1);
+                savedLines = null; //Remove old saved lines to calculate new ones
             }
         }
     }
@@ -36,6 +41,15 @@ public class Text extends Drawable{
     @Override
     public void closeDrawable(){
         this.open = false;
+    }
+
+    /**
+     * Open the text, make it editable again.
+     * <br/> Use open and close for security in drawing
+     */
+    @Override
+    public void openDrawable() {
+        this.open = true;
     }
 
     /**
@@ -53,9 +67,11 @@ public class Text extends Drawable{
      * @return
      */
     private ArrayList<String> parseLine(String[] words, Graphics g){
+        Point currentPoint = this.originPoint;
+
         ArrayList<String> parsedLines = new ArrayList<>();
         String line = "";
-        int workingWidth = (this.windowBounds.x + this.windowBounds.width) - this.originPoint.x; //The maximal width of the string
+        int workingWidth = (this.windowBounds.x + this.windowBounds.width) - currentPoint.x; //The maximal width of the string
         for(int i = 0; i< words.length; i++){
             String tmpLine = line + words[i];
             if(g.getFontMetrics().stringWidth(tmpLine)< workingWidth){
@@ -73,23 +89,38 @@ public class Text extends Drawable{
 
     @Override
     public void draw(Graphics g) {
-        Color oldColor = g.getColor();
-        g.setColor(Color.BLACK);
-        if(open){
-            g.drawRect(this.originPoint.x-1, this.originPoint.y-g.getFontMetrics().getAscent(), 1, g.getFontMetrics().getHeight());
-        }
-        g.setColor(oldColor);
-        if(! this.text.isEmpty()){
-            ArrayList<String> lines = this.parseLine(parseInputToWordsArray(text), g);
-            int newY = this.originPoint.y;
-            for(String line : lines){
-                g.drawString(line, this.originPoint.x, newY);
+        Point currentPoint = (Point) this.originPoint;
+        Graphics2D g2 = (Graphics2D) g;
+        Color oldColor = g2.getColor();
+        g2.setColor(Color.BLACK);
 
-                newY += g.getFontMetrics().getHeight();
+        if(isSelected()){
+            g2.draw(getBoundingShape());
+        }
+
+        //To show text position even if empty
+        if(open && this.text.isEmpty()){
+            g2.drawRect(currentPoint.x-1, currentPoint.y-g2.getFontMetrics().getAscent(), 1, g2.getFontMetrics().getHeight());
+        }
+        g2.setColor(oldColor);
+        if(! this.text.isEmpty()){
+            if(savedLines == null){ //There has been a change -> recalculate
+                savedLines = this.parseLine(parseInputToWordsArray(text), g2);
+                setBoundingShape(new Area(new Rectangle(currentPoint.x-1, currentPoint.y-g2.getFontMetrics().getAscent(),
+                        g2.getFontMetrics().stringWidth(savedLines.get(0))+1, g2.getFontMetrics().getHeight()*savedLines.size())));
             }
-            if(open){
-                g.drawRect(this.originPoint.x-1, this.originPoint.y-g.getFontMetrics().getAscent(),
-                        g.getFontMetrics().stringWidth(lines.get(0))+1, g.getFontMetrics().getHeight()*lines.size());
+            //ArrayList<String> lines = this.parseLine(parseInputToWordsArray(text), g);
+            int newY = currentPoint.y;
+            for(String line : savedLines){
+                g.drawString(line, currentPoint.x, newY);
+
+                newY += g2.getFontMetrics().getHeight();
+            }
+            if(open || isSelected()){
+                /*g.drawRect(currentPoint.x-1, currentPoint.y-g.getFontMetrics().getAscent(),
+                        g.getFontMetrics().stringWidth(savedLines.get(0))+1, g.getFontMetrics().getHeight()*savedLines.size());
+                  */
+                g2.draw(getBoundingShape());
             }
         }
 

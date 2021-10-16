@@ -38,6 +38,21 @@ class Canvas {
     }
 
 
+    /**
+     * Return the first Drawable on the selected point
+     * @param pOnScreen the point to check. Must be relative to screen
+     * @return may be null if no drawable was found
+     */
+    public Drawable mapPointToDrawable(Point pOnScreen){
+        for(int i=0; i< drawableComponents.size(); i++){
+            if(drawableComponents.get(i).contains(pOnScreen)){
+                return drawableComponents.get(i);
+            }
+        }
+        return null;
+    }
+
+
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         Color oldColor = g2.getColor();

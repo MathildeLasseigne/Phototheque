@@ -42,6 +42,7 @@ public class TestPhotoComponent {
 
         PhotoComponent pc = new PhotoComponent(img, new Dimension(500,300));
         pc.setFrame(new Frame(new Insets(20,20,20,20)));
+        pc.allowSelection(true);
 
         JScrollPane sp = new JScrollPane(pc);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

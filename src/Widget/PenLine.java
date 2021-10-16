@@ -17,13 +17,12 @@ public class PenLine extends Drawable {
 
     private boolean open = true;
 
-    /**The whole line of the penLine*/
-    private Area lineShape;
+    private Rectangle displayBounds = new Rectangle();
 
     public PenLine(Point originePoint){
         this.points.add(originePoint);
         //Initialize the shape to a a single point at the origin point
-        this.lineShape  = new Area(new Ellipse2D.Double(originePoint.getX(), this.points.get(0).getY(),1,1));
+        super.setBoundingShape(new Area(new Ellipse2D.Double(originePoint.getX(), this.points.get(0).getY(),1,1)));
     }
 
     /**
@@ -31,7 +30,12 @@ public class PenLine extends Drawable {
      * @param penline
      */
     private PenLine(PenLine penline){
-        this.lineShape = penline.getShape();
+        super.setBoundingShape(penline.getBoundingShape());
+        this.points = (ArrayList<Point>) penline.points.clone();
+        this.lines = (ArrayList<Line2D>) penline.lines.clone();
+        update();
+        closeDrawable();
+
         //Since the draw method only draw the shape, no other information is needed
     }
 
@@ -50,15 +54,20 @@ public class PenLine extends Drawable {
 
 
             updateShape(newLine);
+            calculateDisplayBounds();
         }
     }
 
     /**
-     * Add a line to current area
+     * Add bounds2D of the shape to current boundingShape, with operation addition of Area.
      * @param addedShape
+     * @see Area#add(Area)
      */
     private void updateShape(Shape addedShape){
-        this.lineShape.add(new Area(addedShape.getBounds2D()));
+        AffineTransform aff = new AffineTransform();
+        aff.scale(2,2); //Scale up for more facility in selection
+        Shape customScaledShape = Utilities.scale(addedShape.getBounds2D(), 5);
+        super.getBoundingShape().add(new Area(customScaledShape));
     }
 
     /**
@@ -66,7 +75,7 @@ public class PenLine extends Drawable {
      * @return
      */
     public Area getShape() {
-        return (Area) lineShape.clone(); //To avoid modifing the shape from outside
+        return (Area) super.getBoundingShape().clone(); //To avoid modifing the shape from outside
     }
 
     /**
@@ -76,6 +85,8 @@ public class PenLine extends Drawable {
     public void closeDrawable() {
         this.open = false;
     }
+
+
 
     /**
      * Check if the drawable is closed
@@ -93,27 +104,81 @@ public class PenLine extends Drawable {
         return new PenLine(this);
     }
 
+
     /**
-     * Transforme the shape of the PenLine. Only work if the PenLine is closed
-     * <br/>If the penline is open, do nothing
-     * @param affineTransform
+     * Calculate the rectangle containing all the points
      */
-    public void transform(AffineTransform affineTransform){
-        if(this.isClosed()){
-            this.lineShape.transform(affineTransform);
+    public void calculateDisplayBounds(){
+        Point min = getMinCoord();
+        Point max = getMaxCoord();
+        int border = 4;
+        Dimension rect = new Dimension(max.x - min.x+border, max.y- min.y+border);
+        this.displayBounds = new Rectangle(new Point(min.x-(border/2), min.y-(border/2)), rect);
+    }
+
+
+    /**
+     * Return the min x and y for all points.
+     * Return the top left point of the rectangle containing the whole drawing
+     * @return
+     */
+    private Point getMinCoord(){
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+        for(Point p : points){
+            if(p.x < minX){
+                minX = p.x;
+            }
+            if(p.y < minY){
+                minY = p.y;
+            }
         }
+        return new Point(minX, minY);
+    }
+
+    /**
+     * Return the bottom right point of the rectangle containing the whole drawing
+     * @return
+     */
+    private Point getMaxCoord(){
+        int maxX = 0;
+        int maxY = 0;
+        for(Point p : points){
+            if(p.x > maxX){
+                maxX = p.x;
+            }
+            if(p.y > maxY){
+                maxY = p.y;
+            }
+        }
+        return new Point(maxX, maxY);
+    }
+
+    /**
+     * Update the bounds of the drawable. To call once the drawable is closed
+     */
+    void update(){
+        super.setBoundingShape(new Area()); //Reset the shape
+        for(Line2D l : lines){
+            updateShape(l);
+        }
+        calculateDisplayBounds();
     }
 
     public void draw(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        if(isSelected()){
+            g2.draw(this.displayBounds);
+        }
         if(points.size() <= 1){
             //g2.drawOval(points.get(0).x, points.get(0).y, 1,1 );
-            g2.fill(this.lineShape);
+            g2.fill(super.getBoundingShape());
         } else {
             for(Line2D l : this.lines){
                 g2.draw(l);
             }
+            //g2.draw(getBoundingShape()); //Debug
 
 
             /*g2.setStroke(new BasicStroke(4)); //Do not work, bounds cant have rotation -> really ugly

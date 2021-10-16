@@ -1,8 +1,10 @@
 package Tools;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +17,16 @@ public class Utilities {
 
     public static Point point2DToPoint(Point2D p){
         return new Point((int) p.getX(), (int) p.getY());
+    }
+
+    /**
+     * Return the bounds of the component relative to the screen
+     * @param component
+     * @return
+     */
+    public static Rectangle getBoundsOnScreen(JComponent component){
+        Point locationOnScreen = component.getLocationOnScreen();
+        return new Rectangle(locationOnScreen, component.getBounds().getSize());
     }
 
 
@@ -81,6 +93,14 @@ public class Utilities {
         g2.drawImage(bi, 0, 0, w, h, null);
         g2.dispose();
         return resizedImg;
+    }
+
+    public static Rectangle2D scale(Rectangle2D original, double scale){
+        double newWidth = original.getWidth() * scale;
+        double newHeight = original.getHeight() * scale;
+        double newX = original.getCenterX() - (newWidth/2);
+        double newY = original.getCenterY() - (newHeight/2);
+        return new Rectangle2D.Double(newX, newY, newWidth, newHeight);
     }
 
 }

@@ -161,4 +161,12 @@ public class PhotoComponentModel {
         return this.keyListenerUI;
     }
 
+    /**
+     * Return the canvas controller in use
+     * @return
+     */
+    CanvasController getCanvasController(){
+        return this.canvasController;
+    }
+
 }
